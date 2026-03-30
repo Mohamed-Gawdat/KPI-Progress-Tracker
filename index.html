@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Progress Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="./favicon-32.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<style>
+:root {
+  --bg:        #0d0f1a;
+  --surface:   rgba(255,255,255,0.04);
+  --surface-hover: rgba(255,255,255,0.07);
+  --border:    rgba(255,255,255,0.08);
+  --border-glow: rgba(99,179,255,0.35);
+  --accent:    #4fa8ff;
+  --accent2:   #7b61ff;
+  --accent3:   #00e5c0;
+  --warn:      #ffb347;
+  --danger:    #ff5e7a;
+  --success:   #00e5c0;
+  --text:      #e8edf5;
+  --text-muted:#7a8499;
+  --radius:    18px;
+  --radius-sm: 11px;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.bg-orbs { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.18; animation: drift 18s ease-in-out infinite; }
+.orb1 { width:520px;height:520px;background:radial-gradient(circle,#4fa8ff,transparent 70%);top:-150px;left:-150px;animation-duration:20s; }
+.orb2 { width:400px;height:400px;background:radial-gradient(circle,#7b61ff,transparent 70%);top:40%;right:-120px;animation-duration:26s;animation-delay:-8s; }
+.orb3 { width:350px;height:350px;background:radial-gradient(circle,#00e5c0,transparent 70%);bottom:-80px;left:30%;animation-duration:22s;animation-delay:-4s; }
+@keyframes drift {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%      { transform: translate(40px,-30px) scale(1.08); }
+  66%      { transform: translate(-25px,40px) scale(0.95); }
+}
+
+.page-wrapper {
+  position: relative; z-index: 1; min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 0 16px 40px;
+}
+
+header { width: 100%; max-width: 620px; padding: 28px 0 20px; animation: fadeDown 0.7s cubic-bezier(.22,1,.36,1) both; }
+.header-inner { display: flex; align-items: center; gap: 14px; }
+.logo-mark {
+  width: 52px; height: 52px;
+  border-radius: 14px; display: grid; place-items: center;
+  flex-shrink: 0; overflow: hidden;
+  animation: logoPop 0.8s cubic-bezier(.34,1.56,.64,1) 0.2s both;
+}
+@keyframes logoPop { from { transform: scale(0.4) rotate(-20deg); opacity: 0; } to { transform: scale(1) rotate(0deg); opacity: 1; } }
+.header-text { display: flex; flex-direction: column; gap: 2px; }
+.header-title {
+  font-family: var(--font-head); font-size: 26px; font-weight: 800; letter-spacing: -0.5px;
+  background: linear-gradient(90deg, #fff 30%, var(--accent3));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.header-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 0.5px; }
+
+.container {
+  width: 100%; max-width: 620px;
+  background: rgba(255,255,255,0.035);
+  border: 1px solid var(--border); border-radius: 28px; padding: 28px;
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 32px 64px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+  animation: fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.1s both;
+}
+@keyframes fadeUp   { from { opacity:0; transform:translateY(30px); }  to { opacity:1; transform:translateY(0); } }
+@keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+
+
+.section-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 18px 18px 14px; margin-top: 14px;
+  opacity: 0; animation: staggerIn 0.5s cubic-bezier(.22,1,.36,1) forwards;
+  transition: border-color 0.3s;
+}
+.section-card:hover { border-color: rgba(99,179,255,0.2); }
+.section-card:first-child { margin-top: 0; }
+.section-card:nth-child(1) { animation-delay: 0.05s; }
+.section-card:nth-child(2) { animation-delay: 0.12s; }
+.section-card:nth-child(3) { animation-delay: 0.19s; }
+.section-card:nth-child(4) { animation-delay: 0.26s; }
+.section-card:nth-child(5) { animation-delay: 0.33s; }
+.section-card:nth-child(6) { animation-delay: 0.40s; }
+.section-card:nth-child(7) { animation-delay: 0.47s; }
+@keyframes staggerIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+.section-title {
+  font-family: var(--font-head); font-size: 13px; font-weight: 700;
+  color: var(--accent); letter-spacing: 1px; text-transform: uppercase;
+  margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+.section-title::before {
+  content: ''; display: block; width: 4px; height: 14px;
+  background: linear-gradient(to bottom, var(--accent), var(--accent2)); border-radius: 2px;
+}
+.section-title.value-title { color: var(--accent2); }
+.section-title.value-title::before { background: linear-gradient(to bottom, var(--accent2), var(--accent3)); }
+
+.input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.input-grid.single { grid-template-columns: 1fr; }
+.input-grid.triple { grid-template-columns: 1fr 1fr 1fr; }
+
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field label { font-size: 11px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.3px; padding-left: 2px; }
+
+input {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border); color: var(--text);
+  font-family: var(--font-body); font-size: 15px;
+  padding: 11px 14px; border-radius: var(--radius-sm); outline: none;
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s; width: 100%;
+}
+input::placeholder { color: rgba(122,132,153,0.6); }
+input:focus { border-color: var(--accent); background: rgba(79,168,255,0.07); box-shadow: 0 0 0 3px rgba(79,168,255,0.12); }
+input:hover:not(:focus) { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.07); }
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type=number] { -moz-appearance: textfield; }
+
+input.editable-target {
+  background: rgba(0,229,192,0.07); border: 1px solid rgba(0,229,192,0.2);
+  color: var(--accent3); font-weight: 500; cursor: default;
+}
+input.editable-target[readonly]:hover { border-color: rgba(0,229,192,0.4); background: rgba(0,229,192,0.1); }
+input.editable-target.editing {
+  background: rgba(0,229,192,0.12); border-color: var(--accent3);
+  box-shadow: 0 0 0 3px rgba(0,229,192,0.18); cursor: text; color: #fff;
+}
+
+/* ---- divider ---- */
+.seg-divider {
+  display: flex; align-items: center; gap: 12px; margin: 22px 0 8px;
+}
+.seg-divider-line { flex: 1; height: 1px; background: var(--border); }
+.seg-divider-label {
+  font-family: var(--font-head); font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--accent) !important;
+}
+
+/* ---- Generate btn ---- */
+.generate-btn {
+  width: 100%; margin-top: 22px; padding: 17px 24px;
+  background: linear-gradient(135deg, var(--accent3) 0%, var(--accent2) 100%);
+  border: none; border-radius: var(--radius); color: #fff;
+  font-family: var(--font-head); font-size: 16px; font-weight: 700;
+  letter-spacing: 0.3px; cursor: pointer; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  box-shadow: 0 8px 28px rgba(0,229,192,0.3);
+  transition: transform 0.2s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s;
+}
+.generate-btn:hover { transform: translateY(-3px) scale(1.01); box-shadow: 0 14px 40px rgba(0,229,192,0.4); }
+.generate-btn:active { transform: translateY(0) scale(0.99); }
+.btn-arrow { font-size: 18px; transition: transform 0.25s ease; }
+.generate-btn:hover .btn-arrow { transform: translateX(5px); }
+.btn-shine {
+  position: absolute; top: -50%; left: -80%; width: 60%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.18), transparent);
+  transform: skewX(-20deg); animation: shine 3.5s infinite;
+}
+@keyframes shine { 0%,100% { left:-80%; opacity:0; } 40% { left:150%; opacity:1; } }
+
+/* ---- Output ---- */
+.output-wrap {
+  margin-top: 22px; background: rgba(0,0,0,0.2);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; transition: border-color 0.3s;
+}
+.output-wrap:focus-within { border-color: var(--border-glow); }
+.output-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+.output-label { font-size: 11px; font-weight: 600; color: var(--text-muted); letter-spacing: 1.2px; text-transform: uppercase; }
+.output-actions { display: flex; gap: 6px; }
+.icon-btn {
+  width: 32px; height: 32px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px; color: var(--text-muted);
+  display: grid; place-items: center; cursor: pointer; transition: all 0.2s;
+}
+.icon-btn:hover { background: var(--surface-hover); color: var(--text); border-color: rgba(255,255,255,0.15); transform: scale(1.08); }
+.icon-btn:active { transform: scale(0.95); }
+.whatsapp-btn { color: #25d366; border-color: rgba(37,211,102,0.25); }
+.whatsapp-btn:hover { background: rgba(37,211,102,0.12) !important; color: #25d366 !important; border-color: rgba(37,211,102,0.5) !important; }
+
+textarea#output {
+  display: block; width: 100%; height: 380px;
+  background: transparent; border: none; color: var(--text);
+  font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.7;
+  padding: 16px; resize: none; outline: none;
+}
+
+footer {
+  margin-top: 28px; font-size: 12px; color: var(--text-muted);
+  display: flex; align-items: center; gap: 8px;
+  animation: fadeUp 0.7s cubic-bezier(.22,1,.36,1) 0.3s both;
+}
+footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
+.footer-sep { opacity: 0.3; }
+
+#toast {
+  position: fixed; bottom: 32px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(15,18,32,0.9); border: 1px solid var(--border-glow);
+  color: white; padding: 12px 20px; border-radius: 50px;
+  font-size: 14px; font-weight: 500;
+  display: flex; align-items: center; gap: 8px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.4s, transform 0.4s cubic-bezier(.34,1.56,.64,1);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(79,168,255,0.15);
+}
+#toast svg { color: var(--accent3); }
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+@media (max-width: 480px) {
+  .container { padding: 20px 16px; border-radius: 22px; }
+  .input-grid { grid-template-columns: 1fr; }
+  .input-grid.triple { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
+
+<div class="page-wrapper">
+
+  <header>
+    <div class="header-inner">
+      <div class="logo-mark">
+        <svg width="52" height="52" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="hbg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#0d1520"/>
+              <stop offset="100%" stop-color="#0a0f1a"/>
+            </linearGradient>
+            <linearGradient id="hb1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1a8c7a"/>
+              <stop offset="100%" stop-color="#0d4a5c"/>
+            </linearGradient>
+            <linearGradient id="hb2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1eb89a"/>
+              <stop offset="100%" stop-color="#0d5a6e"/>
+            </linearGradient>
+            <linearGradient id="hb3" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#20d4b0"/>
+              <stop offset="100%" stop-color="#0e6880"/>
+            </linearGradient>
+            <linearGradient id="hb4" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#00e5c0"/>
+              <stop offset="100%" stop-color="#0f7a90"/>
+            </linearGradient>
+            <linearGradient id="hb5" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#00f0cc"/>
+              <stop offset="100%" stop-color="#10889e"/>
+            </linearGradient>
+            <radialGradient id="hglow" cx="60%" cy="30%" r="55%">
+              <stop offset="0%" stop-color="#0d4a3a" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#0a0f1a" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Background -->
+          <rect width="52" height="52" rx="12" fill="url(#hbg)"/>
+          <!-- Ambient glow orb -->
+          <ellipse cx="32" cy="18" rx="22" ry="18" fill="url(#hglow)"/>
+
+          <!-- Bar shells (dark) -->
+          <rect x="5"  y="30" width="7" height="17" rx="2" fill="#0f1e2e" opacity="0.9"/>
+          <rect x="14" y="25" width="7" height="22" rx="2" fill="#0f1e2e" opacity="0.9"/>
+          <rect x="23" y="20" width="7" height="27" rx="2" fill="#0f1e2e" opacity="0.9"/>
+          <rect x="32" y="14" width="7" height="33" rx="2" fill="#0f1e2e" opacity="0.9"/>
+          <rect x="41" y="8"  width="7" height="39" rx="2" fill="#0f1e2e" opacity="0.9"/>
+
+          <!-- Bar fills (gradient) -->
+          <rect x="5"  y="34" width="7" height="13" rx="2" fill="url(#hb1)"/>
+          <rect x="14" y="29" width="7" height="18" rx="2" fill="url(#hb2)"/>
+          <rect x="23" y="23" width="7" height="24" rx="2" fill="url(#hb3)"/>
+          <rect x="32" y="17" width="7" height="30" rx="2" fill="url(#hb4)"/>
+          <rect x="41" y="11" width="7" height="36" rx="2" fill="url(#hb5)"/>
+
+          <!-- Baseline -->
+          <line x1="4" y1="47" x2="49" y2="47" stroke="rgba(255,255,255,0.12)" stroke-width="0.8" stroke-linecap="round"/>
+
+          <!-- Trend line -->
+          <polyline points="8.5,29 17.5,24 26.5,19 35.5,13 44.5,8" fill="none" stroke="#4fa8ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <!-- Trend dots -->
+          <circle cx="8.5"  cy="29" r="1.6" fill="#0d1520" stroke="#00c896" stroke-width="1.2"/>
+          <circle cx="17.5" cy="24" r="1.6" fill="#0d1520" stroke="#4fa8ff" stroke-width="1.2"/>
+          <circle cx="26.5" cy="19" r="1.6" fill="#0d1520" stroke="#4fa8ff" stroke-width="1.2"/>
+          <circle cx="35.5" cy="13" r="1.6" fill="#0d1520" stroke="#7b61ff" stroke-width="1.2"/>
+
+          <!-- Peak dot (filled teal) -->
+          <circle cx="44.5" cy="8" r="2.8" fill="#00e5c0" stroke="#0d1520" stroke-width="1"/>
+          <!-- Arrow on peak -->
+          <polyline points="40,5 44.5,8 40.5,11.5" fill="none" stroke="#00e5c0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="header-text">
+        <span class="header-title">Prog Tracker</span>
+        <span class="header-sub">Sohag Station · KPI Progress Tracker</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- VOLUME SECTION -->
+    <div class="seg-divider" style="margin-top:0; margin-bottom:14px;">
+      <div class="seg-divider-line"></div>
+      <div class="seg-divider-label" style="color:var(--accent);">80% · Volume</div>
+      <div class="seg-divider-line"></div>
+    </div>
+
+    <!-- Lines -->
+    <div class="section-card">
+      <div class="section-title">Lines <span style="font-size:10px;opacity:.5;margin-left:4px">36% weight · Target 311 · Gateway 80%</span></div>
+      <div class="input-grid">
+        <div class="field">
+          <label>Full Target (auto)</label>
+          <input type="number" id="linesTarget" class="editable-target" value="311" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
+        </div>
+        <div class="field">
+          <label>Current Achievement</label>
+          <input type="number" id="linesAch" placeholder="0" autocomplete="off" min="0">
+        </div>
+      </div>
+    </div>
+
+    <!-- Postpaid -->
+    <div class="section-card">
+      <div class="section-title">Postpaid <span style="font-size:10px;opacity:.5;margin-left:4px">12% weight · Target 2 · Gateway 80%</span></div>
+      <div class="input-grid">
+        <div class="field">
+          <label>Full Target (auto)</label>
+          <input type="number" id="postTarget" class="editable-target" value="2" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
+        </div>
+        <div class="field">
+          <label>Current Achievement</label>
+          <input type="number" id="postAch" placeholder="0" autocomplete="off" min="0">
+        </div>
+      </div>
+    </div>
+
+    <!-- Cash Services -->
+    <div class="section-card">
+      <div class="section-title">Cash Services <span style="font-size:10px;opacity:.5;margin-left:4px">12% weight · Target 261 · Gateway 90%</span></div>
+      <div class="input-grid">
+        <div class="field">
+          <label>Full Target (auto)</label>
+          <input type="number" id="cashTarget" class="editable-target" value="261" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
+        </div>
+        <div class="field">
+          <label>Current Achievement</label>
+          <input type="number" id="cashAch" placeholder="0" autocomplete="off" min="0">
+        </div>
+      </div>
+    </div>
+
+    <!-- MNP -->
+    <div class="section-card">
+      <div class="section-title">MNP <span style="font-size:10px;opacity:.5;margin-left:4px">4% weight · Target 12 · Gateway 90%</span></div>
+      <div class="input-grid">
+        <div class="field">
+          <label>Full Target (auto)</label>
+          <input type="number" id="mnpTarget" class="editable-target" value="12" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
+        </div>
+        <div class="field">
+          <label>Current Achievement</label>
+          <input type="number" id="mnpAch" placeholder="0" autocomplete="off" min="0">
+        </div>
+      </div>
+    </div>
+
+    <!-- Connectivity & E-Home -->
+    <div class="section-card">
+      <div class="section-title">Connectivity &amp; E-Home <span style="font-size:10px;opacity:.5;margin-left:4px">12% weight · Conn 21 (80%) · E-Home 1 (100%)</span></div>
+      <div class="input-grid triple">
+        <div class="field">
+          <label>Conn Target (auto)</label>
+          <input type="number" id="connTarget" class="editable-target" value="21" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
+        </div>
+        <div class="field">
+          <label>Conn Achievement</label>
+          <input type="number" id="connAch" placeholder="0" autocomplete="off" min="0">
+        </div>
+        <div class="field">
+          <label>E-Home Achievement</label>
+          <input type="number" id="ehomeAch" placeholder="0" autocomplete="off" min="0">
+        </div>
+      </div>
+    </div>
+
+    <!-- Strategic Product -->
+    <div class="section-card">
+      <div class="section-title">Strategic Product <span style="font-size:10px;opacity:.5;margin-left:4px">4% weight · Target 7000 L.E · Gateway 80%</span></div>
+      <div class="input-grid">
+        <div class="field">
+          <label>Full Target L.E (auto)</label>
+          <input type="number" id="stratTarget" class="editable-target" value="7000" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
+        </div>
+        <div class="field">
+          <label>Current Achievement L.E</label>
+          <input type="number" id="stratAch" placeholder="0" autocomplete="off" min="0">
+        </div>
+      </div>
+    </div>
+
+    <!-- VALUE SECTION -->
+    <div class="seg-divider">
+      <div class="seg-divider-line"></div>
+      <div class="seg-divider-label">20% · Value</div>
+      <div class="seg-divider-line"></div>
+    </div>
+
+    <!-- Points -->
+    <div class="section-card">
+      <div class="section-title value-title">Points <span style="font-size:10px;opacity:.5;margin-left:4px">20% weight · Target 3095 · Gateway 80%</span></div>
+      <div class="input-grid">
+        <div class="field">
+          <label>Full Target (auto)</label>
+          <input type="number" id="pointsTarget" class="editable-target" value="3095" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
+        </div>
+        <div class="field">
+          <label>Current Achievement</label>
+          <input type="number" id="pointsAch" placeholder="0" autocomplete="off" min="0">
+        </div>
+      </div>
+    </div>
+
+    <button class="generate-btn" onclick="generateReport()">
+      <span class="btn-text">Calculate Progress</span>
+      <span class="btn-arrow">→</span>
+      <div class="btn-shine"></div>
+    </button>
+
+    <div class="output-wrap">
+      <div class="output-header">
+        <span class="output-label">Progress Report</span>
+        <div class="output-actions">
+          <button class="icon-btn" onclick="copyReport()" title="Copy">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+            </svg>
+          </button>
+          <button class="icon-btn whatsapp-btn" onclick="shareReport()" title="Share on WhatsApp">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.859L.057 23.617a.75.75 0 00.921.921l5.752-1.474A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.726 9.726 0 01-4.964-1.362l-.355-.211-3.668.94.972-3.558-.232-.366A9.722 9.722 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <textarea id="output" readonly spellcheck="false" placeholder="Fill in your numbers and hit Calculate Progress..."></textarea>
+    </div>
+
+  </main>
+
+  <footer>
+    <span>Developed by <strong>Mohamed Gawdat</strong></span>
+    <span class="footer-sep">·</span>
+    <span>Sales Management</span>
+    <span class="footer-sep">·</span>
+    <span>ID: 320290</span>
+  </footer>
+
+</div>
+
+<div id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+  Copied to clipboard
+</div>
+
+<script>
+/* ---- Helpers ---- */
+function today() {
+  const d = new Date();
+  return d.getDate() + " / " + d.toLocaleString('en', { month: 'short' }) + " / " + d.getFullYear();
+}
+function num(id) { const el = document.getElementById(id); return Number(el ? el.value : 0) || 0; }
+function pct(ach, target) { return target ? Math.round((ach / target) * 100) : 0; }
+function needFor(ach, target) { const n = target - ach; return n > 0 ? n : 0; }
+function statusIcon(ach, target, gw) {
+  const p = pct(ach, target);
+  if (p >= 100) return '➛';
+  if (p >= gw)  return '➛';
+  return '➛';
+}
+
+/* ---- Editable targets ---- */
+function makeEditable(el) { el.removeAttribute('readonly'); el.classList.add('editing'); el.focus(); el.select(); }
+function lockEditable(el)  { el.setAttribute('readonly', true); el.classList.remove('editing'); }
+
+/* ---- Build KPI line ---- */
+function kpiLine(label, ach, target, gwPct, weight) {
+  const gw        = Math.ceil(target * gwPct / 100);
+  const achPct    = pct(ach, target);
+  const toFull    = needFor(ach, target);
+  const toGw      = needFor(ach, gw);
+  const icon      = statusIcon(ach, target, gwPct);
+
+  return `${icon} ${label} (${weight}%)
+   - Achievement          : ${ach} / ${target}  [${achPct}%]
+   - Need for Gateway (${gwPct}%)  : ${toGw > 0 ? toGw : 'DONE'}
+   - Need for Full Target (100%) : ${toFull > 0 ? toFull : 'DONE'}`;
+}
+
+/* ---- Weighted score calc ---- */
+function calcScore(ach, target, gwPct, weight) {
+  const p = Math.min(pct(ach, target), 100);
+  return (p / 100) * weight;
+}
+
+/* ---- Generate report ---- */
+function generateReport() {
+  // targets
+  const lT  = num('linesTarget');
+  const pT  = num('postTarget');
+  const csT = num('cashTarget');
+  const mT  = num('mnpTarget');
+  const cT  = num('connTarget');
+  const eT  = 1; // e-home fixed
+  const sT  = num('stratTarget');
+  const ptT = num('pointsTarget');
+
+  // achievements
+  const lA  = num('linesAch');
+  const pA  = num('postAch');
+  const csA = num('cashAch');
+  const mA  = num('mnpAch');
+  const cA  = num('connAch');
+  const eA  = num('ehomeAch');
+  const sA  = num('stratAch');
+  const ptA = num('pointsAch');
+
+  // Connectivity combined score: average of conn% and ehome%
+  const connPct  = pct(cA, cT);
+  const ehomePct = pct(eA, eT);
+  const connCombinedPct = Math.round((connPct + ehomePct) / 2);
+  const connCombinedScore = (connCombinedPct / 100) * 12;
+
+  // individual scores
+  const sLines  = calcScore(lA,  lT,  80, 36);
+  const sPost   = calcScore(pA,  pT,  80, 12);
+  const sCash   = calcScore(csA, csT, 90, 12);
+  const sMnp    = calcScore(mA,  mT,  90, 4);
+  const sStrat  = calcScore(sA,  sT,  80, 4);
+  const sPts    = calcScore(ptA, ptT, 80, 20);
+  const volumeScore = sLines + sPost + sCash + sMnp + connCombinedScore + sStrat;
+  const totalScore  = volumeScore + sPts;
+
+  // gateway needs for conn + ehome
+  const connGw    = Math.ceil(cT * 0.80);
+  const ehomeGw   = Math.ceil(eT * 1.00);
+  const toConnGw  = needFor(cA, connGw);
+  const toConnFull= needFor(cA, cT);
+  const toEhomeGw = needFor(eA, ehomeGw);
+  const toEhomeFull = needFor(eA, eT);
+  const connStatus  = statusIcon(cA, cT, 80);
+  const ehomeStatus = statusIcon(eA, eT, 100);
+
+  const output = document.getElementById('output');
+  output.value =
+`Sohag Station
+${today()}
+Progress Report
+
+——————————— VOLUME (80%) ———————————
+${kpiLine('Lines',        lA,  lT,  80, 36)}
+
+${kpiLine('Postpaid',     pA,  pT,  80, 12)}
+
+${kpiLine('Cash Services',csA, csT, 90, 12)}
+
+${kpiLine('MNP',          mA,  mT,  90, 4)}
+
+${connStatus} Connectivity (12%)
+   - Conn Achievement          : ${cA} / ${cT}  [${connPct}%]
+   - Need for Gateway (80%)    : ${toConnGw > 0 ? toConnGw : 'DONE'}
+   - Need for Full Target (100%): ${toConnFull > 0 ? toConnFull : 'DONE'}
+   ${ehomeStatus} E-Home
+   - E-Home Achievement        : ${eA} / ${eT}  [${ehomePct}%]
+   - Need for Gateway (100%)   : ${toEhomeGw > 0 ? toEhomeGw : 'DONE'}
+   - Need for Full Target (100%): ${toEhomeFull > 0 ? toEhomeFull : 'DONE'}
+
+${kpiLine('Strategic Product (L.E)', sA, sT, 80, 4)}
+——————————— VALUE (20%) ————————————
+${kpiLine('Points',       ptA, ptT, 80, 20)}
+══════════════════════════════════
+OVERALL SCORE
+   Volume Score : ${volumeScore.toFixed(1)} / 80
+   Value Score  : ${sPts.toFixed(1)} / 20
+   TOTAL        : ${totalScore.toFixed(1)} / 100
+══════════════════════════════════`;
+}
+
+/* ---- Copy ---- */
+function copyReport() {
+  const text = document.getElementById('output').value;
+  if (!text.trim()) return;
+  navigator.clipboard.writeText(text);
+  const toast = document.getElementById('toast');
+  if(toast){ toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2000); }
+}
+
+/* ---- WhatsApp Share ---- */
+function shareReport() {
+  const text = document.getElementById('output').value;
+  if (!text.trim()) return;
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+}
+</script>
+</body>
+</html>
