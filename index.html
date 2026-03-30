@@ -594,7 +594,7 @@ function generateReport() {
 ${today()}
 Progress Report
 
-——————————— VOLUME (80%) ———————————
+————— VOLUME (80%) —————
 ${kpiLine('Lines',        lA,  lT,  80, 36)}
 
 ${kpiLine('Postpaid',     pA,  pT,  80, 12)}
@@ -613,14 +613,14 @@ ${connStatus} Connectivity (12%)
    - Need for Full Target (100%): ${toEhomeFull > 0 ? toEhomeFull : 'DONE'}
 
 ${kpiLine('Strategic Product (L.E)', sA, sT, 80, 4)}
-——————————— VALUE (20%) ————————————
+————— VALUE (20%) —————
 ${kpiLine('Points',       ptA, ptT, 80, 20)}
-══════════════════════════════════
+══════════════════════
 OVERALL SCORE
    Volume Score : ${volumeScore.toFixed(1)} / 80
    Value Score  : ${sPts.toFixed(1)} / 20
    TOTAL        : ${totalScore.toFixed(1)} / 100
-══════════════════════════════════`;
+══════════════════════`;
 }
 
 /* ---- Copy ---- */
