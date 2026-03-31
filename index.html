@@ -341,7 +341,7 @@ footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
 
     <!-- Lines -->
     <div class="section-card">
-      <div class="section-title">Lines <span style="font-size:10px;opacity:.5;margin-left:4px">36% weight · Target 311 · Gateway 80%</span></div>
+      <div class="section-title">Lines <span style="font-size:10px;opacity:.5;margin-left:4px">36% weight · Target 311 · Gateway 90%</span></div>
       <div class="input-grid">
         <div class="field">
           <label>Full Target (auto)</label>
@@ -386,7 +386,7 @@ footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
 
     <!-- MNP -->
     <div class="section-card">
-      <div class="section-title">MNP <span style="font-size:10px;opacity:.5;margin-left:4px">4% weight · Target 12 · Gateway 90%</span></div>
+      <div class="section-title">MNP <span style="font-size:10px;opacity:.5;margin-left:4px">4% weight · Target 12 · Gateway 80%</span></div>
       <div class="input-grid">
         <div class="field">
           <label>Full Target (auto)</label>
@@ -569,10 +569,10 @@ function generateReport() {
   const connCombinedScore = (connCombinedPct / 100) * 12;
 
   // individual scores
-  const sLines  = calcScore(lA,  lT,  80, 36);
+  const sLines  = calcScore(lA,  lT,  90, 36);
   const sPost   = calcScore(pA,  pT,  80, 12);
   const sCash   = calcScore(csA, csT, 90, 12);
-  const sMnp    = calcScore(mA,  mT,  90, 4);
+  const sMnp    = calcScore(mA,  mT,  80, 4);
   const sStrat  = calcScore(sA,  sT,  80, 4);
   const sPts    = calcScore(ptA, ptT, 80, 20);
   const volumeScore = sLines + sPost + sCash + sMnp + connCombinedScore + sStrat;
@@ -595,13 +595,13 @@ ${today()}
 Progress Report
 
 ————— VOLUME (80%) —————
-${kpiLine('Lines',        lA,  lT,  80, 36)}
+${kpiLine('Lines',        lA,  lT,  90, 36)}
 
 ${kpiLine('Postpaid',     pA,  pT,  80, 12)}
 
 ${kpiLine('Cash Services',csA, csT, 90, 12)}
 
-${kpiLine('MNP',          mA,  mT,  90, 4)}
+${kpiLine('MNP',          mA,  mT,  80, 4)}
 
 ${connStatus} Connectivity (12%)
    - Conn Achievement          : ${cA} / ${cT}  [${connPct}%]
