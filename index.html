@@ -375,11 +375,24 @@ footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
       <div class="input-grid">
         <div class="field">
           <label>Full Target (auto)</label>
-          <input type="number" id="cashTarget" class="editable-target" value="261" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
+          <input type="number" id="cashTarget" class="editable-target" value="261" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this); syncCashStandalone();">
+        </div>
+        <div class="field" style="opacity:0"></div>
+        <div class="field">
+          <label>Cash Services Target (60%)</label>
+          <input type="number" id="cashMainTarget" class="editable-target" value="157" readonly>
         </div>
         <div class="field">
-          <label>Current Achievement</label>
+          <label>Cash Services Achievement</label>
           <input type="number" id="cashAch" placeholder="0" autocomplete="off" min="0">
+        </div>
+        <div class="field">
+          <label>Standalone Target (40%)</label>
+          <input type="number" id="cashStandaloneTarget" class="editable-target" value="104" readonly>
+        </div>
+        <div class="field">
+          <label>Standalone Achievement</label>
+          <input type="number" id="cashStandaloneAch" placeholder="0" autocomplete="off" min="0">
         </div>
       </div>
     </div>
@@ -520,6 +533,21 @@ function statusIcon(ach, target, gw) {
 function makeEditable(el) { el.removeAttribute('readonly'); el.classList.add('editing'); el.focus(); el.select(); }
 function lockEditable(el)  { el.setAttribute('readonly', true); el.classList.remove('editing'); }
 
+/* ---- Auto-calc Cash Standalone Target = 40% of Cash Services Target ---- */
+function syncCashStandalone() {
+  const csT = Number(document.getElementById('cashTarget').value) || 0;
+  const standalone = Math.round(csT * 0.40);
+  document.getElementById('cashStandaloneTarget').value = standalone;
+  document.getElementById('cashMainTarget').value = csT - standalone;
+}
+document.addEventListener('DOMContentLoaded', function() {
+  syncCashStandalone();
+  var cashEl = document.getElementById('cashTarget');
+  cashEl.addEventListener('input',  syncCashStandalone);
+  cashEl.addEventListener('change', syncCashStandalone);
+  cashEl.addEventListener('blur',   syncCashStandalone);
+});
+
 /* ---- Build KPI line ---- */
 function kpiLine(label, ach, target, gwPct, weight) {
   const gw        = Math.ceil(target * gwPct / 100);
@@ -556,6 +584,8 @@ function generateReport() {
   const lA  = num('linesAch');
   const pA  = num('postAch');
   const csA = num('cashAch');
+  const cssT = num('cashStandaloneTarget');
+  const cssA = num('cashStandaloneAch');
   const mA  = num('mnpAch');
   const cA  = num('connAch');
   const eA  = num('ehomeAch');
@@ -599,7 +629,14 @@ ${kpiLine('Lines',        lA,  lT,  90, 36)}
 
 ${kpiLine('Postpaid',     pA,  pT,  80, 12)}
 
-${kpiLine('Cash Services',csA, csT, 90, 12)}
+➛ Cash Services (12%) [261]
+   - Achievement          : ${csA} / ${csT - cssT}  [${pct(csA, csT - cssT)}%]
+   - Need for Gateway (90%)  : ${needFor(csA, Math.ceil((csT - cssT)*0.90)) > 0 ? needFor(csA, Math.ceil((csT - cssT)*0.90)) : 'DONE'}
+   - Need for Full Target (100%) : ${needFor(csA, csT - cssT) > 0 ? needFor(csA, csT - cssT) : 'DONE'}
+   ➛ Cash Service Standalone
+   - Achievement          : ${cssA} / ${cssT}  [${pct(cssA,cssT)}%]
+   - Need for Gateway (90%)  : ${needFor(cssA, Math.ceil(cssT*0.90)) > 0 ? needFor(cssA, Math.ceil(cssT*0.90)) : 'DONE'}
+   - Need for Full Target (100%) : ${needFor(cssA, cssT) > 0 ? needFor(cssA, cssT) : 'DONE'}
 
 ${kpiLine('MNP',          mA,  mT,  80, 4)}
 
