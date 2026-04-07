@@ -82,6 +82,53 @@ header { width: 100%; max-width: 620px; padding: 28px 0 20px; animation: fadeDow
 @keyframes fadeUp   { from { opacity:0; transform:translateY(30px); }  to { opacity:1; transform:translateY(0); } }
 @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
 
+/* ---- Shifts Left Banner ---- */
+.shifts-banner {
+  background: linear-gradient(135deg, rgba(255,179,71,0.12) 0%, rgba(123,97,255,0.10) 100%);
+  border: 1px solid rgba(255,179,71,0.30);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.shifts-banner::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: linear-gradient(to bottom, var(--warn), var(--accent2));
+  border-radius: 3px 0 0 3px;
+}
+.shifts-icon {
+  font-size: 22px; flex-shrink: 0; width: 40px; height: 40px;
+  background: rgba(255,179,71,0.15); border: 1px solid rgba(255,179,71,0.25);
+  border-radius: 10px; display: grid; place-items: center;
+}
+.shifts-label-wrap { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.shifts-label { font-family: var(--font-head); font-size: 11px; font-weight: 700; color: var(--warn); letter-spacing: 1.2px; text-transform: uppercase; }
+.shifts-sub { font-size: 11px; color: var(--text-muted); }
+.shifts-input-wrap { display: flex; align-items: center; gap: 10px; }
+.shifts-counter {
+  display: flex; align-items: center; gap: 0;
+  background: rgba(0,0,0,0.25); border: 1px solid rgba(255,179,71,0.30); border-radius: 10px; overflow: hidden;
+}
+.shifts-counter button {
+  width: 34px; height: 42px; background: transparent; border: none;
+  color: var(--warn); font-size: 18px; font-weight: 700; cursor: pointer;
+  transition: background 0.2s; display: grid; place-items: center;
+  font-family: var(--font-body);
+}
+.shifts-counter button:hover { background: rgba(255,179,71,0.15); }
+.shifts-counter button:active { background: rgba(255,179,71,0.25); }
+input#shiftsLeft {
+  width: 60px; text-align: center; background: transparent; border: none;
+  border-left: 1px solid rgba(255,179,71,0.20); border-right: 1px solid rgba(255,179,71,0.20);
+  color: var(--warn); font-family: var(--font-head); font-size: 20px; font-weight: 800;
+  padding: 0; height: 42px; outline: none; box-shadow: none;
+}
+input#shiftsLeft:focus { background: rgba(255,179,71,0.07); box-shadow: none; border-color: rgba(255,179,71,0.20); }
 
 .section-card {
   background: rgba(255,255,255,0.025);
@@ -143,7 +190,6 @@ input.editable-target.editing {
   box-shadow: 0 0 0 3px rgba(0,229,192,0.18); cursor: text; color: #fff;
 }
 
-/* ---- divider ---- */
 .seg-divider {
   display: flex; align-items: center; gap: 12px; margin: 22px 0 8px;
 }
@@ -153,7 +199,6 @@ input.editable-target.editing {
   letter-spacing: 2px; text-transform: uppercase; color: var(--accent) !important;
 }
 
-/* ---- Generate btn ---- */
 .generate-btn {
   width: 100%; margin-top: 22px; padding: 17px 24px;
   background: linear-gradient(135deg, var(--accent3) 0%, var(--accent2) 100%);
@@ -175,7 +220,6 @@ input.editable-target.editing {
 }
 @keyframes shine { 0%,100% { left:-80%; opacity:0; } 40% { left:150%; opacity:1; } }
 
-/* ---- Output ---- */
 .output-wrap {
   margin-top: 22px; background: rgba(0,0,0,0.2);
   border: 1px solid var(--border); border-radius: var(--radius);
@@ -200,7 +244,7 @@ input.editable-target.editing {
 .whatsapp-btn:hover { background: rgba(37,211,102,0.12) !important; color: #25d366 !important; border-color: rgba(37,211,102,0.5) !important; }
 
 textarea#output {
-  display: block; width: 100%; height: 380px;
+  display: block; width: 100%; height: 420px;
   background: transparent; border: none; color: var(--text);
   font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.7;
   padding: 16px; resize: none; outline: none;
@@ -238,6 +282,7 @@ footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
   .container { padding: 20px 16px; border-radius: 22px; }
   .input-grid { grid-template-columns: 1fr; }
   .input-grid.triple { grid-template-columns: 1fr 1fr; }
+  .shifts-banner { flex-wrap: wrap; }
 }
 </style>
 </head>
@@ -285,41 +330,25 @@ footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
               <stop offset="100%" stop-color="#0a0f1a" stop-opacity="0"/>
             </radialGradient>
           </defs>
-
-          <!-- Background -->
           <rect width="52" height="52" rx="12" fill="url(#hbg)"/>
-          <!-- Ambient glow orb -->
           <ellipse cx="32" cy="18" rx="22" ry="18" fill="url(#hglow)"/>
-
-          <!-- Bar shells (dark) -->
           <rect x="5"  y="30" width="7" height="17" rx="2" fill="#0f1e2e" opacity="0.9"/>
           <rect x="14" y="25" width="7" height="22" rx="2" fill="#0f1e2e" opacity="0.9"/>
           <rect x="23" y="20" width="7" height="27" rx="2" fill="#0f1e2e" opacity="0.9"/>
           <rect x="32" y="14" width="7" height="33" rx="2" fill="#0f1e2e" opacity="0.9"/>
           <rect x="41" y="8"  width="7" height="39" rx="2" fill="#0f1e2e" opacity="0.9"/>
-
-          <!-- Bar fills (gradient) -->
           <rect x="5"  y="34" width="7" height="13" rx="2" fill="url(#hb1)"/>
           <rect x="14" y="29" width="7" height="18" rx="2" fill="url(#hb2)"/>
           <rect x="23" y="23" width="7" height="24" rx="2" fill="url(#hb3)"/>
           <rect x="32" y="17" width="7" height="30" rx="2" fill="url(#hb4)"/>
           <rect x="41" y="11" width="7" height="36" rx="2" fill="url(#hb5)"/>
-
-          <!-- Baseline -->
           <line x1="4" y1="47" x2="49" y2="47" stroke="rgba(255,255,255,0.12)" stroke-width="0.8" stroke-linecap="round"/>
-
-          <!-- Trend line -->
           <polyline points="8.5,29 17.5,24 26.5,19 35.5,13 44.5,8" fill="none" stroke="#4fa8ff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-
-          <!-- Trend dots -->
           <circle cx="8.5"  cy="29" r="1.6" fill="#0d1520" stroke="#00c896" stroke-width="1.2"/>
           <circle cx="17.5" cy="24" r="1.6" fill="#0d1520" stroke="#4fa8ff" stroke-width="1.2"/>
           <circle cx="26.5" cy="19" r="1.6" fill="#0d1520" stroke="#4fa8ff" stroke-width="1.2"/>
           <circle cx="35.5" cy="13" r="1.6" fill="#0d1520" stroke="#7b61ff" stroke-width="1.2"/>
-
-          <!-- Peak dot (filled teal) -->
           <circle cx="44.5" cy="8" r="2.8" fill="#00e5c0" stroke="#0d1520" stroke-width="1"/>
-          <!-- Arrow on peak -->
           <polyline points="40,5 44.5,8 40.5,11.5" fill="none" stroke="#00e5c0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
@@ -332,6 +361,22 @@ footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
 
   <main class="container">
 
+    <!-- SHIFTS LEFT BANNER -->
+    <div class="shifts-banner">
+      <div class="shifts-icon">⏱</div>
+      <div class="shifts-label-wrap">
+        <span class="shifts-label">Shifts Left</span>
+        <span class="shifts-sub">Used to calculate daily commitment per remaining shift</span>
+      </div>
+      <div class="shifts-input-wrap">
+        <div class="shifts-counter">
+          <button type="button" onclick="adjustShifts(-1)">−</button>
+          <input type="number" id="shiftsLeft" value="1" min="1" max="31" autocomplete="off">
+          <button type="button" onclick="adjustShifts(1)">+</button>
+        </div>
+      </div>
+    </div>
+
     <!-- VOLUME SECTION -->
     <div class="seg-divider" style="margin-top:0; margin-bottom:14px;">
       <div class="seg-divider-line"></div>
@@ -341,11 +386,11 @@ footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
 
     <!-- Lines -->
     <div class="section-card">
-      <div class="section-title">Lines <span style="font-size:10px;opacity:.5;margin-left:4px">36% weight · Target 311 · Gateway 90%</span></div>
+      <div class="section-title">Lines <span style="font-size:10px;opacity:.5;margin-left:4px">36% weight · Target 336 · Gateway 90%</span></div>
       <div class="input-grid">
         <div class="field">
           <label>Full Target (auto)</label>
-          <input type="number" id="linesTarget" class="editable-target" value="311" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
+          <input type="number" id="linesTarget" class="editable-target" value="336" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
         </div>
         <div class="field">
           <label>Current Achievement</label>
@@ -371,16 +416,16 @@ footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
 
     <!-- Cash Services -->
     <div class="section-card">
-      <div class="section-title">Cash Services <span style="font-size:10px;opacity:.5;margin-left:4px">12% weight · Target 261 · Gateway 90%</span></div>
+      <div class="section-title">Cash Services <span style="font-size:10px;opacity:.5;margin-left:4px">12% weight · Target 317 · Gateway 90%</span></div>
       <div class="input-grid">
         <div class="field">
           <label>Full Target (auto)</label>
-          <input type="number" id="cashTarget" class="editable-target" value="261" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this); syncCashStandalone();">
+          <input type="number" id="cashTarget" class="editable-target" value="317" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this); syncCashStandalone();">
         </div>
         <div class="field" style="opacity:0"></div>
         <div class="field">
           <label>Cash Services Target (60%)</label>
-          <input type="number" id="cashMainTarget" class="editable-target" value="157" readonly>
+          <input type="number" id="cashMainTarget" class="editable-target" value="190" readonly>
         </div>
         <div class="field">
           <label>Cash Services Achievement</label>
@@ -388,7 +433,7 @@ footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
         </div>
         <div class="field">
           <label>Standalone Target (40%)</label>
-          <input type="number" id="cashStandaloneTarget" class="editable-target" value="104" readonly>
+          <input type="number" id="cashStandaloneTarget" class="editable-target" value="127" readonly>
         </div>
         <div class="field">
           <label>Standalone Achievement</label>
@@ -399,11 +444,11 @@ footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
 
     <!-- MNP -->
     <div class="section-card">
-      <div class="section-title">MNP <span style="font-size:10px;opacity:.5;margin-left:4px">4% weight · Target 12 · Gateway 80%</span></div>
+      <div class="section-title">MNP <span style="font-size:10px;opacity:.5;margin-left:4px">4% weight · Target 14 · Gateway 80%</span></div>
       <div class="input-grid">
         <div class="field">
           <label>Full Target (auto)</label>
-          <input type="number" id="mnpTarget" class="editable-target" value="12" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
+          <input type="number" id="mnpTarget" class="editable-target" value="14" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
         </div>
         <div class="field">
           <label>Current Achievement</label>
@@ -414,14 +459,14 @@ footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
 
     <!-- Connectivity & E-Home -->
     <div class="section-card">
-      <div class="section-title">Connectivity &amp; E-Home <span style="font-size:10px;opacity:.5;margin-left:4px">12% weight · Conn 21 (80%) · E-Home 1 (100%)</span></div>
+      <div class="section-title">Connectivity &amp; E-Home <span style="font-size:10px;opacity:.5;margin-left:4px">12% weight · Data 23 (80%) · E-Home 1 (100%)</span></div>
       <div class="input-grid triple">
         <div class="field">
-          <label>Conn Target (auto)</label>
-          <input type="number" id="connTarget" class="editable-target" value="21" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
+          <label>Data Target (auto)</label>
+          <input type="number" id="connTarget" class="editable-target" value="23" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
         </div>
         <div class="field">
-          <label>Conn Achievement</label>
+          <label>Data Achievement</label>
           <input type="number" id="connAch" placeholder="0" autocomplete="off" min="0">
         </div>
         <div class="field">
@@ -433,11 +478,11 @@ footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
 
     <!-- Strategic Product -->
     <div class="section-card">
-      <div class="section-title">Strategic Product <span style="font-size:10px;opacity:.5;margin-left:4px">4% weight · Target 7000 L.E · Gateway 80%</span></div>
+      <div class="section-title">Strategic Product <span style="font-size:10px;opacity:.5;margin-left:4px">4% weight · Target 5333 L.E · Gateway 80%</span></div>
       <div class="input-grid">
         <div class="field">
           <label>Full Target L.E (auto)</label>
-          <input type="number" id="stratTarget" class="editable-target" value="7000" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
+          <input type="number" id="stratTarget" class="editable-target" value="5333" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
         </div>
         <div class="field">
           <label>Current Achievement L.E</label>
@@ -455,11 +500,11 @@ footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
 
     <!-- Points -->
     <div class="section-card">
-      <div class="section-title value-title">Points <span style="font-size:10px;opacity:.5;margin-left:4px">20% weight · Target 3095 · Gateway 80%</span></div>
+      <div class="section-title value-title">Points <span style="font-size:10px;opacity:.5;margin-left:4px">20% weight · Target 3225 · Gateway 80%</span></div>
       <div class="input-grid">
         <div class="field">
           <label>Full Target (auto)</label>
-          <input type="number" id="pointsTarget" class="editable-target" value="3095" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
+          <input type="number" id="pointsTarget" class="editable-target" value="3225" readonly ondblclick="makeEditable(this)" onblur="lockEditable(this)">
         </div>
         <div class="field">
           <label>Current Achievement</label>
@@ -514,7 +559,6 @@ footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
 </div>
 
 <script>
-/* ---- Helpers ---- */
 function today() {
   const d = new Date();
   return d.getDate() + " / " + d.toLocaleString('en', { month: 'short' }) + " / " + d.getFullYear();
@@ -522,18 +566,36 @@ function today() {
 function num(id) { const el = document.getElementById(id); return Number(el ? el.value : 0) || 0; }
 function pct(ach, target) { return target ? Math.round((ach / target) * 100) : 0; }
 function needFor(ach, target) { const n = target - ach; return n > 0 ? n : 0; }
-function statusIcon(ach, target, gw) {
-  const p = pct(ach, target);
-  if (p >= 100) return '➛';
-  if (p >= gw)  return '➛';
-  return '➛';
+
+/* Shifts counter */
+function adjustShifts(delta) {
+  const el = document.getElementById('shiftsLeft');
+  const v = (parseInt(el.value) || 1) + delta;
+  el.value = Math.max(1, Math.min(31, v));
 }
 
-/* ---- Editable targets ---- */
+/* Editable targets */
 function makeEditable(el) { el.removeAttribute('readonly'); el.classList.add('editing'); el.focus(); el.select(); }
 function lockEditable(el)  { el.setAttribute('readonly', true); el.classList.remove('editing'); }
 
-/* ---- Auto-calc Cash Standalone Target = 40% of Cash Services Target ---- */
+/* Daily commitment: how many per shift needed to reach target, given remaining */
+function dailyCommit(ach, target, shifts) {
+  if (shifts <= 0) return '—';
+  const remaining = target - ach;
+  if (remaining <= 0) return 'DONE ✓';
+  return Math.ceil(remaining / shifts);
+}
+
+/* Gateway daily commit */
+function gwDailyCommit(ach, target, gwPct, shifts) {
+  if (shifts <= 0) return '—';
+  const gw = Math.ceil(target * gwPct / 100);
+  const remaining = gw - ach;
+  if (remaining <= 0) return 'DONE ✓';
+  return Math.ceil(remaining / shifts);
+}
+
+/* Cash sync */
 function syncCashStandalone() {
   const csT = Number(document.getElementById('cashTarget').value) || 0;
   const standalone = Math.round(csT * 0.40);
@@ -548,57 +610,53 @@ document.addEventListener('DOMContentLoaded', function() {
   cashEl.addEventListener('blur',   syncCashStandalone);
 });
 
-/* ---- Build KPI line ---- */
 function kpiLine(label, ach, target, gwPct, weight) {
   const gw        = Math.ceil(target * gwPct / 100);
   const achPct    = pct(ach, target);
   const toFull    = needFor(ach, target);
   const toGw      = needFor(ach, gw);
-  const icon      = statusIcon(ach, target, gwPct);
 
-  return `${icon} ${label} (${weight}%)
-   - Achievement          : ${ach} / ${target}  [${achPct}%]
-   - Need for Gateway (${gwPct}%)  : ${toGw > 0 ? toGw : 'DONE'}
-   - Need for Full Target (100%) : ${toFull > 0 ? toFull : 'DONE'}`;
+  return `➛ ${label} (${weight}%)
+   - Achievement             : ${ach} / ${target}  [${achPct}%]
+   - Need for Gateway (${gwPct}%)   : ${toGw > 0 ? toGw : 'DONE ✓'}
+   - Need for Full (100%)    : ${toFull > 0 ? toFull : 'DONE ✓'}`;
 }
 
-/* ---- Weighted score calc ---- */
 function calcScore(ach, target, gwPct, weight) {
   const p = Math.min(pct(ach, target), 100);
   return (p / 100) * weight;
 }
 
-/* ---- Generate report ---- */
 function generateReport() {
-  // targets
+  const shifts = Math.max(1, num('shiftsLeft'));
+
   const lT  = num('linesTarget');
   const pT  = num('postTarget');
   const csT = num('cashTarget');
   const mT  = num('mnpTarget');
   const cT  = num('connTarget');
-  const eT  = 1; // e-home fixed
+  const eT  = 1;
   const sT  = num('stratTarget');
   const ptT = num('pointsTarget');
 
-  // achievements
-  const lA  = num('linesAch');
-  const pA  = num('postAch');
-  const csA = num('cashAch');
+  const lA   = num('linesAch');
+  const pA   = num('postAch');
+  const csA  = num('cashAch');
   const cssT = num('cashStandaloneTarget');
   const cssA = num('cashStandaloneAch');
-  const mA  = num('mnpAch');
-  const cA  = num('connAch');
-  const eA  = num('ehomeAch');
-  const sA  = num('stratAch');
-  const ptA = num('pointsAch');
+  const mA   = num('mnpAch');
+  const cA   = num('connAch');
+  const eA   = num('ehomeAch');
+  const sA   = num('stratAch');
+  const ptA  = num('pointsAch');
 
-  // Connectivity combined score: average of conn% and ehome%
+  const csMainT = csT - cssT;
+
   const connPct  = pct(cA, cT);
   const ehomePct = pct(eA, eT);
   const connCombinedPct = Math.round((connPct + ehomePct) / 2);
   const connCombinedScore = (connCombinedPct / 100) * 12;
 
-  // individual scores
   const sLines  = calcScore(lA,  lT,  90, 36);
   const sPost   = calcScore(pA,  pT,  80, 12);
   const sCash   = calcScore(csA, csT, 90, 12);
@@ -608,59 +666,105 @@ function generateReport() {
   const volumeScore = sLines + sPost + sCash + sMnp + connCombinedScore + sStrat;
   const totalScore  = volumeScore + sPts;
 
-  // gateway needs for conn + ehome
-  const connGw    = Math.ceil(cT * 0.80);
-  const ehomeGw   = Math.ceil(eT * 1.00);
-  const toConnGw  = needFor(cA, connGw);
-  const toConnFull= needFor(cA, cT);
-  const toEhomeGw = needFor(eA, ehomeGw);
-  const toEhomeFull = needFor(eA, eT);
-  const connStatus  = statusIcon(cA, cT, 80);
-  const ehomeStatus = statusIcon(eA, eT, 100);
+  const connGw     = Math.ceil(cT * 0.80);
+  const ehomeGw    = Math.ceil(eT * 1.00);
+  const toConnGw   = needFor(cA, connGw);
+  const toConnFull = needFor(cA, cT);
+  const toEhomeGw  = needFor(eA, ehomeGw);
+  const toEhomeFull= needFor(eA, eT);
+
+  // ── Daily commit helpers ──
+  function dc(ach, target, shifts) {
+    if (shifts <= 0) return '—';
+    const r = target - ach;
+    if (r <= 0) return 'DONE ✓';
+    return Math.ceil(r / shifts);
+  }
+  function dcGw(ach, target, gwPct, shifts) {
+    if (shifts <= 0) return '—';
+    const gw = Math.ceil(target * gwPct / 100);
+    const r  = gw - ach;
+    if (r <= 0) return 'DONE ✓';
+    return Math.ceil(r / shifts);
+  }
+
+  // All daily commit values
+  const dcLinesGw    = dcGw(lA,  lT,   90, shifts);
+  const dcLinesFull  = dc(lA,  lT,   shifts);
+  const dcPostGw     = dcGw(pA,  pT,   80, shifts);
+  const dcPostFull   = dc(pA,  pT,   shifts);
+  const dcCsGw       = dcGw(csA, csMainT, 90, shifts);
+  const dcCsFull     = dc(csA, csMainT, shifts);
+  const dcSsGw       = dcGw(cssA, cssT, 90, shifts);
+  const dcSsFull     = dc(cssA, cssT, shifts);
+  const dcMnpGw      = dcGw(mA,  mT,   80, shifts);
+  const dcMnpFull    = dc(mA,  mT,   shifts);
+  const dcConnGw     = toConnGw  > 0 ? Math.ceil(toConnGw  / shifts) : 'DONE ✓';
+  const dcConnFull   = toConnFull > 0 ? Math.ceil(toConnFull / shifts) : 'DONE ✓';
+  const dcEhomeGw    = toEhomeGw  > 0 ? Math.ceil(toEhomeGw  / shifts) : 'DONE ✓';
+  const dcEhomeFull  = toEhomeFull > 0 ? Math.ceil(toEhomeFull / shifts) : 'DONE ✓';
+  const dcStratGw    = dcGw(sA,  sT,   80, shifts);
+  const dcStratFull  = dc(sA,  sT,   shifts);
+  const dcPtsGw      = dcGw(ptA, ptT,  80, shifts);
+  const dcPtsFull    = dc(ptA, ptT,  shifts);
 
   const output = document.getElementById('output');
   output.value =
 `Sohag Station
 ${today()}
 Progress Report
+Shifts Left: ${shifts}
 
-————— VOLUME (80%) —————
-${kpiLine('Lines',        lA,  lT,  90, 36)}
+═════ VOLUME (80%) ═════
+${kpiLine('Lines', lA, lT, 90, 36)}
 
-${kpiLine('Postpaid',     pA,  pT,  80, 12)}
+${kpiLine('Postpaid', pA, pT, 80, 12)}
 
-➛ Cash Services (12%) [261]
-   - Achievement          : ${csA} / ${csT - cssT}  [${pct(csA, csT - cssT)}%]
-   - Need for Gateway (90%)  : ${needFor(csA, Math.ceil((csT - cssT)*0.90)) > 0 ? needFor(csA, Math.ceil((csT - cssT)*0.90)) : 'DONE'}
-   - Need for Full Target (100%) : ${needFor(csA, csT - cssT) > 0 ? needFor(csA, csT - cssT) : 'DONE'}
-   ➛ Cash Service Standalone
-   - Achievement          : ${cssA} / ${cssT}  [${pct(cssA,cssT)}%]
-   - Need for Gateway (90%)  : ${needFor(cssA, Math.ceil(cssT*0.90)) > 0 ? needFor(cssA, Math.ceil(cssT*0.90)) : 'DONE'}
-   - Need for Full Target (100%) : ${needFor(cssA, cssT) > 0 ? needFor(cssA, cssT) : 'DONE'}
+➛ Cash Services (12%) [${csT}]
+   - Achievement             : ${csA} / ${csMainT}  [${pct(csA, csMainT)}%]
+   - Need for Gateway (90%)  : ${needFor(csA, Math.ceil(csMainT*0.90)) > 0 ? needFor(csA, Math.ceil(csMainT*0.90)) : 'DONE ✓'}
+   - Need for Full (100%)    : ${needFor(csA, csMainT) > 0 ? needFor(csA, csMainT) : 'DONE ✓'}
+   ↳ Cash Service Standalone
+      - Achievement             : ${cssA} / ${cssT}  [${pct(cssA,cssT)}%]
+      - Need for Gateway (90%)  : ${needFor(cssA, Math.ceil(cssT*0.90)) > 0 ? needFor(cssA, Math.ceil(cssT*0.90)) : 'DONE ✓'}
+      - Need for Full (100%)    : ${needFor(cssA, cssT) > 0 ? needFor(cssA, cssT) : 'DONE ✓'}
 
-${kpiLine('MNP',          mA,  mT,  80, 4)}
+${kpiLine('MNP', mA, mT, 80, 4)}
 
-${connStatus} Connectivity (12%)
-   - Conn Achievement          : ${cA} / ${cT}  [${connPct}%]
-   - Need for Gateway (80%)    : ${toConnGw > 0 ? toConnGw : 'DONE'}
-   - Need for Full Target (100%): ${toConnFull > 0 ? toConnFull : 'DONE'}
-   ${ehomeStatus} E-Home
-   - E-Home Achievement        : ${eA} / ${eT}  [${ehomePct}%]
-   - Need for Gateway (100%)   : ${toEhomeGw > 0 ? toEhomeGw : 'DONE'}
-   - Need for Full Target (100%): ${toEhomeFull > 0 ? toEhomeFull : 'DONE'}
+➛ Connectivity (12%)
+   - Data Achievement        : ${cA} / ${cT}  [${connPct}%]
+   - Need for Gateway (80%)  : ${toConnGw > 0 ? toConnGw : 'DONE ✓'}
+   - Need for Full (100%)    : ${toConnFull > 0 ? toConnFull : 'DONE ✓'}
+   ↳ E-Home
+      - Achievement             : ${eA} / ${eT}  [${ehomePct}%]
+      - Need for Gateway (100%) : ${toEhomeGw > 0 ? toEhomeGw : 'DONE ✓'}
+      - Need for Full (100%)    : ${toEhomeFull> 0 ? toEhomeFull : 'DONE ✓'}
 
 ${kpiLine('Strategic Product (L.E)', sA, sT, 80, 4)}
-————— VALUE (20%) —————
-${kpiLine('Points',       ptA, ptT, 80, 20)}
-══════════════════════
+═════ VALUE (20%) ═════
+${kpiLine('Points', ptA, ptT, 80, 20)}
+════════════════════
 OVERALL SCORE
    Volume Score : ${volumeScore.toFixed(1)} / 80
    Value Score  : ${sPts.toFixed(1)} / 20
    TOTAL        : ${totalScore.toFixed(1)} / 100
-══════════════════════`;
+════════════════════
+DAILY COMMITMENT  
+${shifts} shift${shifts > 1 ? 's' : ''} left
+════════════════════
+  ➛ Lines: ${dcLinesFull} 
+  ➛ Postpaid: ${dcPostFull} 
+  ➛ Cash Services: ${dcCsFull} 
+     ↳ Standalone: ${dcSsFull} 
+  ➛ MNP: ${dcMnpFull} 
+  ➛ Connectivity (Data): ${dcConnFull}
+     ↳ E-Home: ${dcEhomeFull}
+  ➛ Strategic Product: ${dcStratFull} L.E
+  ➛ Points: ${dcPtsFull}
+════════════════════
+`;
 }
 
-/* ---- Copy ---- */
 function copyReport() {
   const text = document.getElementById('output').value;
   if (!text.trim()) return;
@@ -669,7 +773,6 @@ function copyReport() {
   if(toast){ toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2000); }
 }
 
-/* ---- WhatsApp Share ---- */
 function shareReport() {
   const text = document.getElementById('output').value;
   if (!text.trim()) return;
