@@ -749,18 +749,31 @@ OVERALL SCORE
    Value Score  : ${sPts.toFixed(1)} / 20
    TOTAL        : ${totalScore.toFixed(1)} / 100
 ════════════════════
-DAILY COMMITMENT  
+DAILY COMMITMENT
 ${shifts} shift${shifts > 1 ? 's' : ''} left
 
-  ➛ Lines: ${dcLinesFull} 
-  ➛ Postpaid: ${dcPostFull} 
-  ➛ Cash Services: ${dcCsFull} 
-     ↳ Standalone: ${dcSsFull} 
-  ➛ MNP: ${dcMnpFull} 
+  ➛ Lines              : ${dcLinesFull}
+  ➛ Postpaid           : ${dcPostFull}
+  ➛ Cash Services      : ${dcCsFull}
+     ↳ Standalone      : ${dcSsFull}
+  ➛ MNP                : ${dcMnpFull}
   ➛ Connectivity (Data): ${dcConnFull}
-     ↳ E-Home: ${dcEhomeFull}
-  ➛ Strategic Product: ${dcStratFull} L.E
-  ➛ Points: ${dcPtsFull}
+     ↳ E-Home          : ${dcEhomeFull}
+  ➛ Strategic Product  : ${dcStratFull} L.E
+  ➛ Points             : ${dcPtsFull}
+════════════════════
+DAILY COMMITMENT — GATEWAY
+${shifts} shift${shifts > 1 ? 's' : ''} left
+
+  ➛ Lines              : ${dcLinesGw}
+  ➛ Postpaid           : ${dcPostGw}
+  ➛ Cash Services      : ${dcCsGw}
+     ↳ Standalone      : ${dcSsGw}
+  ➛ MNP                : ${dcMnpGw}
+  ➛ Connectivity (Data): ${dcConnGw}
+     ↳ E-Home          : ${dcEhomeGw}
+  ➛ Strategic Product  : ${dcStratGw} L.E
+  ➛ Points             : ${dcPtsGw}
 ════════════════════
 `;
 }
